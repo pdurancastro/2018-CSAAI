@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <script src="Realizador_Video.js"></script>
+    <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="Diseño.css">
+      <title> Realizador de vídeos </title>
+      <style>
+        body{background-color: white}
+
+      </style>
+    </head>
+
+    <body onload="start()">
+
+        <tr>
+          <video class="Video" controls onmouseover="RatonSonido(event)" id="Videobase" autoplay width=640 height=480  loop ></video>
+          <h1 id='timer'>Timer: </h1>
+        </tr>
+        <form>
+          <label for="fname">Interval</label>
+          <input type="number" id="Inicio">
+          <input type="number" id="Final">
+        </form>
+        <tr>
+          <th>
+            <video onclick="clickCambioVideo(event)" onmouseover="RatonSonido(event)" id="Video1" class="VideoSelect" autoplay muted src="Video1.webm" type="video/webm"  width=300 height=240 loop></video>
+          </th>
+          <th>
+            <video onclick="clickCambioVideo(event)" onmouseover="RatonSonido(event)" id="Video2" class="VideoSelect" autoplay muted src="Video2.webm" type="video/webm"  width=300 height=240 loop></video>
+          </th>
+          <th>
+            <video onclick="clickCambioVideo(event)" onmouseover="RatonSonido(event)" id="Video3" class="VideoSelect" autoplay muted src="Video3.webm" type="video/webm"  width=300 height=240 loop></video>
+          </th>
+          <th>
+            <video onclick="clickCambioVideo(event)" onmouseover="RatonSonido(event)" id="Video4" class="VideoSelect" autoplay muted src="Video4.webm" type="video/webm"  width=300 height=240 loop></video>
+          </th>
+        </tr>
+
+    </body>
+</html>
