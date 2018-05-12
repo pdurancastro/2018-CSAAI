@@ -16,7 +16,7 @@ const FAR = 10000;
 var renderer, scene, camera, pointLight;
 
 // Set up the sphere vars
-const RADIUS = 7;
+const RADIUS = 9;
 const SEGMENTS = 6;
 const RINGS = 6;
 
@@ -70,7 +70,7 @@ function createScene()
 
 	// Get the DOM element to attach to
     container = document.getElementById("gameCanvas");
-    // Create a WebGL renderer, camera and a scene
+    // Size a WebGL renderer, camera and a scene
     renderer = new THREE.WebGLRenderer();
     camera =
         new THREE.PerspectiveCamera(
@@ -112,7 +112,7 @@ function addPlane(){
   var plane = new THREE.Mesh( geometry, material );
   plane.position.z = -300;
   //scene.add();
-  scene.add(plane);
+  //scene.add(plane);
 }
 
 
@@ -142,16 +142,15 @@ function addSphere()
 function addMap()
 {
   var caja_fantasmas = new THREE.BoxGeometry(100,5,PADDLE_DEPTH,PADDLE_QUALITY);
-  var caja_fantasmas_2 = new THREE.BoxGeometry(5,35,PADDLE_DEPTH,PADDLE_QUALITY);
-
   var box = new THREE.BoxGeometry(40,30,PADDLE_DEPTH,PADDLE_QUALITY);
-
-  var geometrybordes0 = new THREE.BoxGeometry(PADDLE_WIDTH,130,PADDLE_DEPTH,PADDLE_QUALITY);
-  var geometrybordes = new THREE.BoxGeometry(PADDLE_WIDTH,110,PADDLE_DEPTH,PADDLE_QUALITY);
+  var geometrybordes0 = new THREE.BoxGeometry(10,130,PADDLE_DEPTH,PADDLE_QUALITY);
+  var geometrybordes = new THREE.BoxGeometry(10,110,PADDLE_DEPTH,PADDLE_QUALITY);
   var geometrybordes2 = new THREE.BoxGeometry(370,12,PADDLE_DEPTH,PADDLE_QUALITY);
 
   var lineas = new THREE.BoxGeometry(120,10,PADDLE_DEPTH,PADDLE_QUALITY);
-  var lineas2 = new THREE.BoxGeometry(10,80,PADDLE_DEPTH,PADDLE_QUALITY);
+  var lineas2 = new THREE.BoxGeometry(10,70,PADDLE_DEPTH,PADDLE_QUALITY);
+  var lineas3 = new THREE.BoxGeometry(10,40,PADDLE_DEPTH,PADDLE_QUALITY);
+
 
   var materialbordes = new THREE.MeshLambertMaterial(
     {
@@ -162,6 +161,10 @@ function addMap()
   new_linea2 = new THREE.Mesh(lineas, materialbordes);
   new_linea3 = new THREE.Mesh(lineas2, materialbordes);
   new_linea4 = new THREE.Mesh(lineas2, materialbordes);
+  new_linea5 = new THREE.Mesh(lineas3,materialbordes);
+  new_linea6 = new THREE.Mesh(lineas3,materialbordes);
+
+
 
   bordes = new THREE.Mesh( geometrybordes0, materialbordes);
   bordes_1 = new THREE.Mesh( geometrybordes, materialbordes);
@@ -172,8 +175,8 @@ function addMap()
 
   caja_1 = new THREE.Mesh(caja_fantasmas, materialbordes);
   caja_2 = new THREE.Mesh(caja_fantasmas, materialbordes);
-  caja_3 = new THREE.Mesh(caja_fantasmas_2, materialbordes);
-  caja_4 = new THREE.Mesh(caja_fantasmas_2, materialbordes);
+  caja_3 = new THREE.Mesh(caja_fantasmas, materialbordes);
+
 
   box_map = new THREE.Mesh(box, materialbordes);
   box_map2 = new THREE.Mesh(box, materialbordes);
@@ -190,12 +193,20 @@ function addMap()
   new_linea2.position.z = -300;
 
   new_linea3.position.x = -120;
-  new_linea3.position.y = 0;
+  new_linea3.position.y = 30;
   new_linea3.position.z = -300;
 
   new_linea4.position.x = 120;
-  new_linea4.position.y = 0;
+  new_linea4.position.y = 30;
   new_linea4.position.z = -300;
+
+  new_linea5.position.x = 120;
+  new_linea5.position.y = -50;
+  new_linea5.position.z = -300;
+
+  new_linea6.position.x = -120;
+  new_linea6.position.y = -50;
+  new_linea6.position.z = -300;
 
   caja_1.position.x = 0;
   caja_1.position.z = -300;
@@ -203,13 +214,8 @@ function addMap()
   caja_2.position.y = 30;
   caja_2.position.z = -300;
 
-  caja_3.position.x = 50;
-  caja_3.position.y = 15;
+  caja_3.position.y = -30;
   caja_3.position.z = -300;
-
-  caja_4.position.x = -50;
-  caja_4.position.y = 15;
-  caja_4.position.z = -300;
 
   box_map.position.x = 120;
   box_map.position.y = 80;
@@ -226,10 +232,6 @@ function addMap()
   box_map4.position.x = -120;
   box_map4.position.y = -80;
   box_map4.position.z = -300;
-
-  box_map5.position.x = -0;
-  box_map5.position.y = -120;
-  box_map5.position.z = -300;
 
   bordes.position.x = 180;
   bordes.position.y = 60;
@@ -262,7 +264,6 @@ function addMap()
   scene.add(caja_1);
   scene.add(caja_2);
   scene.add(caja_3);
-  scene.add(caja_4);
   scene.add(bordes);
   scene.add(bordes_1);
   scene.add(bordes2);
@@ -273,11 +274,12 @@ function addMap()
   scene.add(box_map2);
   scene.add(box_map3);
   scene.add(box_map4);
-  scene.add(box_map5);
   scene.add(new_linea);
   scene.add(new_linea2);
   scene.add(new_linea3);
   scene.add(new_linea4);
+  scene.add(new_linea5);
+  scene.add(new_linea6);
 
 
 }
@@ -325,16 +327,78 @@ function ColisionSphere()
     //console.log("holi")
   //}
 
-  //Colision Linea 2
-  if(sphere.position.y <= new_linea2.position.y + 10 &
-     sphere.position.y >= new_linea2.position.y - 10 &
-     sphere.position.x <= new_linea2.position.x + 60 &
-     sphere.position.x >= new_linea2.position.x - 60 ){
+//Caja principal
+  if(sphere.position.x >= bordes.position.x - 10 &
+     sphere.position.y >= bordes.position.y - 60){
+    ballDirX = 0;
+    sphere.position.x = sphere.position.x - 1;
+  }else{
+    ballDirX = 1;
+  }
+  if(sphere.position.x >= bordes_1.position.x - 10 &
+     sphere.position.y <= bordes_1.position.y + 60){
+    ballDirX = 0;
+    sphere.position.x = sphere.position.x - 1;
+  }else{
+    ballDirX = 1;
+  }
+  if(sphere.position.x <= bordes2.position.x + 10 &
+     sphere.position.y >= bordes2.position.y - 60){
+    ballDirX = 0;
+    sphere.position.x = sphere.position.x + 1;
+  }else{
+    ballDirX = 1;
+  }
+  if(sphere.position.x <= bordes2_1.position.x + 10 &
+     sphere.position.y <= bordes2_1.position.y + 60){
+    ballDirX = 0;
+    sphere.position.x = sphere.position.x + 1;
+  }else{
+    ballDirX = 1;
+  }
+  if(sphere.position.y >= bordes3.position.y - 12){
+    ballDirY = 0;
+    sphere.position.y = sphere.position.y - 1;
+  }else{
+    ballDirY = 1;
+  }
+  if(sphere.position.y <= bordes4.position.y + 12){
     ballDirY = 0;
     sphere.position.y = sphere.position.y + 1;
   }else{
     ballDirY = 1;
   }
+//
+
+
+
+
+  //Colision Lineas Paralelas
+  if(sphere.position.y <= new_linea.position.y + 10 &
+     sphere.position.y >= new_linea.position.y - 10 &
+     sphere.position.x <= new_linea.position.x + 60 &
+     sphere.position.x >= new_linea.position.x - 60)
+    {
+      ballDirY = 0;
+      sphere.position.y = sphere.position.y;
+    }else{
+      ballDirY = 1;
+    }
+
+
+  if(sphere.position.y <= new_linea2.position.y + 10 &
+     sphere.position.y >= new_linea2.position.y - 10 &
+     sphere.position.x <= new_linea2.position.x + 60 &
+     sphere.position.x >= new_linea2.position.x - 60 )
+    {
+    ballDirY = 0;
+    sphere.position.y = sphere.position.y;
+  }else{
+    ballDirY = 1;
+  }
+
+
+
 
 }
 
