@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <script src="vpuzzle.js"></script>
+    <head>
+    <meta charset="utf-8" />
+      <title></title>
+      <style>
+        body{background-color: white}
+        canvas{background-color: white;
+              padding-left:0;
+              padding-right:0;
+              margin-left:auto;
+              margin-right:auto;
+              display:block;
+              }
+        button{
+          padding-left: 0;
+          padding-right: 0;
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+        }
+      </style>
+    </head>
+
+    <body onload="main()">
+      <table border="0.2" align="center">
+      <tr>
+        <th><h6>Use W,A,S,D </h6>
+        <h6> to move the blocks</h6> </th>
+        <th><img  class="MisImagenes" id = "c0" src = "imagen1.jpg" width="180" height="120"></th>
+        <th><img  class="MisImagenes" id = "c1" src = "imagen2.jpg" width="180" height="120"></th>
+        <th><img  class="MisImagenes" id = "c2" src = "imagen3.jpg" width="180" height="120"></th>
+        <th>
+          <button type="Chos"  onclick="chooseImage()" align="center">New Image</button>
+          <button type="button" onclick="randomize()" align="center" >Start</button>
+          <button type="button" onclick="solve()" align="center" >Solve</button>
+        </th>
+
+      </tr>
+    </table>
+
+    <table border="1" align="center">
+    <tr>
+      <th><img id = "p0" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p1" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p2" src = "Images/0/white.png"  onclick="change(this)"></th>
+    </tr>
+    <tr>
+      <th><img id = "p3" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p4" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p5" src = "Images/0/white.png"  onclick="change(this)"></th>
+    </tr>
+    <tr>
+      <th><img id = "p6" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p7" src = "Images/0/white.png"  onclick="change(this)"></th>
+      <th><img id = "p8" src = "Images/0/white.png"  onclick="change(this)"></th>
+    </tr>
+
+    </body>
+</html>
