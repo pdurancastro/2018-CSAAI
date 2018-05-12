@@ -10,8 +10,11 @@ var currentPuzzle = [];
 
 var solution = [0, 1, 2, 3, 4, 5, 6, 7, "white"];
 
+var time;
+
+
 function chooseImage(){
-currentImage = Math.floor((Math.random() *(3-1) ) + 1);
+currentImage = Math.floor((Math.random() *(4-1) ) + 1);
 //currentImage = 1;
   for (i=0; i<9; i++){
     id = "p" + i;
@@ -25,6 +28,8 @@ currentImage = Math.floor((Math.random() *(3-1) ) + 1);
 }
 
 function randomize(){
+
+  startime = new Date();
   currentPuzzle = [];
   j = 0;
   for (a = [0, 1, 2, 3, 4, 5, 6, 7], i = a.length; i--; ) {
@@ -42,6 +47,7 @@ function randomize(){
     image = document.getElementById(id);
     image.src = imgPath;
   }
+  setInterval(gameTime, 1000);
 }
 
 
@@ -123,29 +129,43 @@ function keyHandler(event) {
           equal += 1;
         }
         if(equal == 9){
-          alert("Congratulations");
+          alert("Congratulations your time is :" + time);
           chooseImage();
         }
       }
     }
 
 
-//function changeCarrousel(){
-//  for (i=0; i<3; i++){
-  //  next = nextImg(carouselRecord[i]);
-  //  carouselRecord.splice(i,1,next);
-  //  id = "c"+i;
-  //  imgId = next+".jpg";
-  //  imgPath = "./Images/0/"+imgId;
-  //  image = document.getElementById(id);
-  //  image.src = imgPath;
-//  }
-//}
+
 function solve(){
   //console.log(currentPuzzle)
   currentPuzzle.splice(0,9, 0, 1, 2, 3, 4, 5, 6, 7, "white");
   draw();
   check();
+}
+
+
+function gameTime(){
+  var msecPerMinute = 1000 * 60;
+  var msecPerHour = msecPerMinute * 60;
+  var dateMsec = startime.getTime();
+
+  //console.log(dateMsec);
+
+  var actual = new Date();
+  var diference = actual.getTime() - dateMsec;
+  // Calculate the hours, minutes, and seconds.
+  var hours = Math.floor(diference / msecPerHour );
+  diference= diference - (hours * msecPerHour );
+
+  var minutes = Math.floor(diference / msecPerMinute );
+  diference = diference - (minutes * msecPerMinute );
+
+  var seconds = Math.floor(diference / 1000 );
+
+  // Display the result.
+  time = hours + ":" + minutes + ":" + seconds;
+  document.getElementById("timing").innerHTML = "Time:" +  time;
 }
 
 
