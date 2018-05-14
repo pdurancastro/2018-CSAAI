@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <script src="croma2.js"></script>
+    <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="Diseño.css">
+      <title> Realizador de vídeos </title>
+      <style>
+        body{background-color: green}
+      </style>
+    </head>
+
+    <body>
+      <table>
+        <th>
+          <video class="Video" id=v src=video1.mp4 type=video/mp4 controls  width=640 height=480 loop muted> </video>
+        </th>
+        <th>
+          <canvas id=c></canvas>
+        </th>
+      </table>
+
+        <button onclick='CambiarCroma(event)' id="red">R</button>
+        <input class="Caja" type="number" id="R">
+        <button onclick='CambiarCroma(event)' id="green">G</button>
+        <input class="Caja" type="number" id="G">
+        <button onclick='CambiarCroma(event)' id="blue">B</button>
+        <input class="Caja" type="number" id="B">
+        <button onclick='CambiarCroma(event)' id="Resultado">Resultado</button>
+        <button onclick='CambiarCroma(event)' id="gris" >Gris</button>
+        <button onclick='CambiarCroma(event)' id="imagen">Imagen</button>
+        <h1>Editor de Vídeo</h1>
+        <h2>Los botones R,G,B dan los valores de dichas componentes en el vídeo enfatizando en la que se haga click.
+        Se puede establecer el valor de cada componente en las cajas y dando a Resultado.</h2>
+
+    </body>
+</html>
