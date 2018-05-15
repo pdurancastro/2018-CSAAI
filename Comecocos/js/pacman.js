@@ -21,37 +21,22 @@ const SEGMENTS = 6;
 const RINGS = 6;
 const Radiomin = 4;
 
+var fruta;
 var sphere;
 var fantasma;
 var angle = 0.0;
 
-//Set up the variable plane
-const FIELD_WIDTH= 400,
-      FIELD_HEIGTH= 400;
-const PLANE_WIDTH = FIELD_WIDTH,
-      PLANE_HEIGTH = FIELD_HEIGTH,
-      PLANE_QUALITY= 10;
+var resultado = 0;
+var life = 3;
 
-var fiel_width_colision = FIELD_WIDTH;
-var fiel_height_colision = FIELD_HEIGTH;
+const QUALITY = 1;
 
-//Set up the variable cube
-const PADDLE_WIDTH= 10,
-      PADDLE_HEIGTH = 30,
-      PADDLE_DEPTH = 10,
-      PADDLE_QUALITY = 1;
-
-var playerPaddleDirY = 0,
-    cpuPaddleDirY = 0,
-    paddleSpeed = 3;
-
-var playerPaddle,
-    cpuPaddle,
-    bordes,
-    bordes2;
-
+//Pacman Dir
 var ballDirX = 1,
     ballDirY = 1;
+
+var color1 = 0xffff00;
+
 
 // GAME FUNCTIONS
 
@@ -64,7 +49,13 @@ function setup()
   addPoint();
   addMap();
   addLight();
+  musicbeg();
   draw();
+  setInterval(gameTime, 1000);
+  //setInterval(fruta,10000);
+  //colisionfruta();
+
+
 }
 
 
@@ -104,11 +95,10 @@ function createScene()
   //  var imageData = ctx.getImageData(0,0,container.width,container.height);
 
 
-
 }
 
 function addPlane(){
-  var geometry = new THREE.PlaneGeometry(PLANE_WIDTH, PLANE_HEIGTH, PLANE_QUALITY);
+  var geometry = new THREE.PlaneGeometry(400, 400, 10);
   var material = new THREE.MeshLambertMaterial(
       {
         color: 0xccffff, side: THREE.DoubleSide
@@ -128,7 +118,7 @@ function addSphere()
         RINGS);
     var material = new THREE.MeshLambertMaterial(
         {
-          color: 0xffff00
+          color: color1
         });
     // Create a new mesh with sphere geometry
     sphere = new THREE.Mesh(geometry, material);
@@ -138,10 +128,34 @@ function addSphere()
     sphere.position.y = -20;
     sphere.position.z = -300;
 
-    console.log(sphere.material.color)
+    //console.log(sphere.material.color)
     // Finally, add the sphere to the scene
     scene.add(sphere);
 }
+
+
+function fruta()
+{
+    var geometry = new THREE.SphereGeometry(
+        5,
+        SEGMENTS,
+        RINGS);
+    var material = new THREE.MeshLambertMaterial(
+        {
+          color: 0xff6600
+        });
+    // Create a new mesh with sphere geometry
+    fruta = new THREE.Mesh(geometry, material);
+
+    // Move the Sphere back in Z so we can see it
+    fruta.position.x = -85;
+    fruta.position.y = 80;
+    fruta.position.z = -300;
+
+    scene.add(fruta);
+
+}
+
 
 function addfantasma(){
   var geometry = new THREE.SphereGeometry(
@@ -248,15 +262,15 @@ function addPoint(){
 
 function addMap()
 {
-  var caja_fantasmas = new THREE.BoxGeometry(100,40,PADDLE_DEPTH,PADDLE_QUALITY);
-  var box = new THREE.BoxGeometry(40,30,PADDLE_DEPTH,PADDLE_QUALITY);
-  var geometrybordes0 = new THREE.BoxGeometry(10,130,PADDLE_DEPTH,PADDLE_QUALITY);
-  var geometrybordes = new THREE.BoxGeometry(10,110,PADDLE_DEPTH,PADDLE_QUALITY);
-  var geometrybordes2 = new THREE.BoxGeometry(370,12,PADDLE_DEPTH,PADDLE_QUALITY);
+  var caja_fantasmas = new THREE.BoxGeometry(100,40,10,QUALITY);
+  var box = new THREE.BoxGeometry(40,30,10,QUALITY);
+  var geometrybordes0 = new THREE.BoxGeometry(10,130,10,QUALITY);
+  var geometrybordes = new THREE.BoxGeometry(10,110,10,QUALITY);
+  var geometrybordes2 = new THREE.BoxGeometry(370,12,10,QUALITY);
 
-  var lineas = new THREE.BoxGeometry(120,10,PADDLE_DEPTH,PADDLE_QUALITY);
-  var lineas2 = new THREE.BoxGeometry(10,100,PADDLE_DEPTH,PADDLE_QUALITY);
-  var lineas3 = new THREE.BoxGeometry(10,60,PADDLE_DEPTH,PADDLE_QUALITY);
+  var lineas = new THREE.BoxGeometry(120,10,10,QUALITY);
+  var lineas2 = new THREE.BoxGeometry(10,100,10,QUALITY);
+  var lineas3 = new THREE.BoxGeometry(10,60,10,QUALITY);
 
 
   var materialbordes = new THREE.MeshLambertMaterial(
@@ -378,10 +392,12 @@ function addLight()
 
 
 function MovementSphere(){
+
   if (Key.isDown(Key.A)){
     sphere.position.x += -ballDirX;
   }else if (Key.isDown(Key.D)){
     sphere.position.x += ballDirX;
+
   }else if (Key.isDown(Key.W)){
     sphere.position.y += ballDirY;
   }else if (Key.isDown(Key.S)){
@@ -458,16 +474,27 @@ function ColisionSphere()
        //console.log("Choque")
        sphere.position.x = 0;
        sphere.position.y = -20;
-     }
+       life = life - 1;
+       document.getElementById("lives").innerHTML = "Life:" + life;
+       musicdeath();
 
-   if(sphere.position.y <= fantasma2.position.y + RADIUS &&
+     }else if(sphere.position.y <= fantasma2.position.y + RADIUS &&
       sphere.position.x <= fantasma2.position.x + RADIUS &&
       sphere.position.y >= fantasma2.position.y - RADIUS &&
       sphere.position.x >= fantasma2.position.x - RADIUS  ){
           //console.log("Choque")
       sphere.position.x = 0;
       sphere.position.y = -20;
+      life = life - 1;
+      document.getElementById("lives").innerHTML = "Life:" + life;
+      musicdeath();
+    }else if (life == 0){
+      musicdeath();
+      alert("You LOST :( ,your score is:" + resultado +"(Press F5 to reload)");
     }
+
+
+
 //////////////////////////////////////////////////////////////////////////
   //Colision Lineas Paralelas
   if(sphere.position.y <= new_linea.position.y + 10 &
@@ -526,7 +553,250 @@ function ColisionSphere()
 }
 
 
+function score(){
+  //Colision pelotas
+  if(sphere.position.y <= point.position.y + Radiomin &&
+     sphere.position.x <= point.position.x + Radiomin &&
+     sphere.position.y >= point.position.y - Radiomin &&
+     sphere.position.x >= point.position.x - Radiomin  ){
+       point.position.x = 200;
+       point.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
 
+     }else if(sphere.position.y <= point2.position.y + Radiomin &&
+      sphere.position.x <= point2.position.x + Radiomin &&
+      sphere.position.y >= point2.position.y - Radiomin &&
+      sphere.position.x >= point2.position.x - Radiomin  ){
+        point2.position.x = 200;
+        point2.position.y = 200;
+        musicchomp();
+        resultado = resultado + 10;
+        document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+     }else if(sphere.position.y <= point3.position.y + Radiomin &&
+      sphere.position.x <= point3.position.x + Radiomin &&
+      sphere.position.y >= point3.position.y - Radiomin &&
+      sphere.position.x >= point3.position.x - Radiomin  ){
+        point3.position.x = 200;
+        point3.position.y = 200;
+        musicchomp();
+        resultado = resultado + 10;
+        document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point4.position.y + Radiomin &&
+     sphere.position.x <= point4.position.x + Radiomin &&
+     sphere.position.y >= point4.position.y - Radiomin &&
+     sphere.position.x >= point4.position.x - Radiomin  ){
+       point4.position.x = 200;
+       point4.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point5.position.y + Radiomin &&
+     sphere.position.x <= point5.position.x + Radiomin &&
+     sphere.position.y >= point5.position.y - Radiomin &&
+     sphere.position.x >= point5.position.x - Radiomin  ){
+       point5.position.x = 200;
+       point5.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point6.position.y + Radiomin &&
+     sphere.position.x <= point6.position.x + Radiomin &&
+     sphere.position.y >= point6.position.y - Radiomin &&
+     sphere.position.x >= point6.position.x - Radiomin  ){
+       point6.position.x = 200;
+       point6.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point7.position.y + Radiomin &&
+     sphere.position.x <= point7.position.x + Radiomin &&
+     sphere.position.y >= point7.position.y - Radiomin &&
+     sphere.position.x >= point7.position.x - Radiomin  ){
+       point7.position.x = 200;
+       point7.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point8.position.y + Radiomin &&
+     sphere.position.x <= point8.position.x + Radiomin &&
+     sphere.position.y >= point8.position.y - Radiomin &&
+     sphere.position.x >= point8.position.x - Radiomin  ){
+       point8.position.x = 200;
+       point8.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+    }else if(sphere.position.y <= point9.position.y + Radiomin &&
+     sphere.position.x <= point9.position.x + Radiomin &&
+     sphere.position.y >= point9.position.y - Radiomin &&
+     sphere.position.x >= point9.position.x - Radiomin  ){
+       point9.position.x = 200;
+       point9.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+   }else if(sphere.position.y <= point10.position.y + Radiomin &&
+    sphere.position.x <= point10.position.x + Radiomin &&
+    sphere.position.y >= point10.position.y - Radiomin &&
+    sphere.position.x >= point10.position.x - Radiomin  ){
+      point10.position.x = 200;
+      point10.position.y = 200;
+      musicchomp();
+      resultado = resultado + 10;
+      document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+  }else if (resultado == 100){
+    alert("You Win!!,your score is:" + resultado+"and your time is:"+ time + "(Press F5 to reload)" );
+  }
+}
+
+function colisionfruta(){
+  if(sphere.position.y <= fruta.position.y + Radiomin &&
+     sphere.position.x <= fruta.position.x + Radiomin &&
+     sphere.position.y >= fruta.position.y - Radiomin &&
+     sphere.position.x >= fruta.position.x - Radiomin  ){
+       fruta.position.x = 200;
+       fruta.position.y = 200;
+       musicchomp();
+       resultado = resultado + 10;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+  }
+}
+
+function musicbeg(){
+  // instantiate a listener
+  var audioListener = new THREE.AudioListener();
+  // add the listener to the camera
+  camera.add( audioListener );
+  // instantiate audio object
+  var oceanAmbientSound = new THREE.Audio( audioListener );
+  // add the audio object to the scene
+  scene.add( oceanAmbientSound );
+  // instantiate a loader
+  var loader = new THREE.AudioLoader();
+  // load a resource
+  loader.load(
+	// resource URL
+	 './js/audio/beginning.mp3',
+	// onLoad callback
+	function ( audioBuffer ) {
+		// set the audio object buffer to the loaded object
+		oceanAmbientSound.setBuffer( audioBuffer );
+		// play the audio
+		oceanAmbientSound.play();
+	 },
+	// onProgress callback
+	function ( xhr ) {
+		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+	},
+	// onError callback
+	function ( err ) {
+		console.log( 'An error happened' );
+	}
+  );
+  startime = new Date();
+}
+
+function musicchomp(){
+  // instantiate a listener
+  var audioListener = new THREE.AudioListener();
+  // add the listener to the camera
+  camera.add( audioListener );
+  // instantiate audio object
+  var oceanAmbientSound = new THREE.Audio( audioListener );
+  // add the audio object to the scene
+  scene.add( oceanAmbientSound );
+  // instantiate a loader
+  var loader = new THREE.AudioLoader();
+  // load a resource
+  loader.load(
+	// resource URL
+	 './js/audio/chomp.mp3',
+	// onLoad callback
+	function ( audioBuffer ) {
+		// set the audio object buffer to the loaded object
+		oceanAmbientSound.setBuffer( audioBuffer );
+		// play the audio
+		oceanAmbientSound.play();
+	 },
+	// onProgress callback
+	function ( xhr ) {
+		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+	},
+	// onError callback
+	function ( err ) {
+		console.log( 'An error happened' );
+	}
+  );
+
+}
+
+function musicdeath(){
+  // instantiate a listener
+  var audioListener = new THREE.AudioListener();
+  // add the listener to the camera
+  camera.add( audioListener );
+  // instantiate audio object
+  var oceanAmbientSound = new THREE.Audio( audioListener );
+  // add the audio object to the scene
+  scene.add( oceanAmbientSound );
+  // instantiate a loader
+  var loader = new THREE.AudioLoader();
+  // load a resource
+  loader.load(
+	// resource URL
+	 './js/audio/death.mp3',
+	// onLoad callback
+	function ( audioBuffer ) {
+		// set the audio object buffer to the loaded object
+		oceanAmbientSound.setBuffer( audioBuffer );
+		// play the audio
+		oceanAmbientSound.play();
+	 },
+	// onProgress callback
+	function ( xhr ) {
+		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+	},
+	// onError callback
+	function ( err ) {
+		console.log( 'An error happened' );
+	}
+  );
+
+}
+
+function gameTime(){
+  var msecPerMinute = 1000 * 60;
+  var msecPerHour = msecPerMinute * 60;
+  var dateMsec = startime.getTime();
+
+  //console.log(dateMsec);
+
+  var actual = new Date();
+  var diference = actual.getTime() - dateMsec;
+  // Calculate the hours, minutes, and seconds.
+  var hours = Math.floor(diference / msecPerHour );
+  diference= diference - (hours * msecPerHour );
+
+  var minutes = Math.floor(diference / msecPerMinute );
+  diference = diference - (minutes * msecPerMinute );
+
+  var seconds = Math.floor(diference / 1000 );
+
+  // Display the result.
+  time = hours + ":" + minutes + ":" + seconds;
+  document.getElementById("timing").innerHTML = "Time:" +  time;
+}
 
 function draw()
 {
@@ -540,4 +810,5 @@ function draw()
   MovementSphere();
   Movementfantasma();
   ColisionSphere();
+  score();
 }
