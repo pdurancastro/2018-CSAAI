@@ -20,6 +20,7 @@ const RADIUS = 9;
 const SEGMENTS = 6;
 const RINGS = 6;
 const Radiomin = 4;
+const RadioG = 6;
 
 var fruta;
 var sphere;
@@ -35,6 +36,7 @@ const QUALITY = 1;
 var ballDirX = 1,
     ballDirY = 1;
 
+var Estado = 0;
 var color1 = 0xffff00;
 
 
@@ -47,6 +49,7 @@ function setup()
   addSphere();
   addfantasma();
   addPoint();
+  addPointG();
   addMap();
   addLight();
   musicbeg();
@@ -97,6 +100,8 @@ function createScene()
 
 }
 
+
+
 function addPlane(){
   var geometry = new THREE.PlaneGeometry(400, 400, 10);
   var material = new THREE.MeshLambertMaterial(
@@ -116,6 +121,7 @@ function addSphere()
         RADIUS,
         SEGMENTS,
         RINGS);
+
     var material = new THREE.MeshLambertMaterial(
         {
           color: color1
@@ -203,8 +209,6 @@ function addPoint(){
   point8 = new THREE.Mesh(geometry, material);
   point9 = new THREE.Mesh(geometry, material);
   point10 = new THREE.Mesh(geometry, material);
-  point11 = new THREE.Mesh(geometry, material);
-  point12 = new THREE.Mesh(geometry, material);
 
   point.position.x = 0;
   point.position.y = -50;
@@ -246,7 +250,6 @@ function addPoint(){
   point10.position.y = -50;
   point10.position.z = -300;
 
-
   scene.add(point);
   scene.add(point2);
   scene.add(point3);
@@ -259,6 +262,44 @@ function addPoint(){
   scene.add(point10);
 }
 
+function addPointG(){
+  var geometry = new THREE.SphereGeometry(
+      RadioG,
+      SEGMENTS,
+      RINGS);
+  var material = new THREE.MeshLambertMaterial(
+      {
+        color: 0xffff00
+      });
+
+    pointG = new THREE.Mesh(geometry, material);
+    pointG2 = new THREE.Mesh(geometry, material);
+    pointG3 = new THREE.Mesh(geometry, material);
+    pointG4 = new THREE.Mesh(geometry, material);
+
+    pointG.position.x = -90;
+    pointG.position.y = -80;
+    pointG.position.z = -300;
+
+    pointG2.position.x = 90;
+    pointG2.position.y = -80;
+    pointG2.position.z = -300;
+
+    pointG3.position.x = 90;
+    pointG3.position.y = 80;
+    pointG3.position.z = -300;
+
+    pointG4.position.x = -90;
+    pointG4.position.y = 80;
+    pointG4.position.z = -300;
+
+    scene.add(pointG);
+    scene.add(pointG2);
+    scene.add(pointG3);
+    scene.add(pointG4);
+
+
+}
 
 function addMap()
 {
@@ -655,7 +696,51 @@ function score(){
       resultado = resultado + 10;
       document.getElementById("scores").innerHTML = "Score:" + resultado;
 
-  }else if (resultado == 100){
+// Pelotas Grandes
+  }else if(sphere.position.y <= pointG.position.y + RadioG &&
+   sphere.position.x <= pointG.position.x + RadioG &&
+   sphere.position.y >= pointG.position.y - RadioG &&
+   sphere.position.x >= pointG.position.x - RadioG  ){
+       pointG.position.x = 200;
+       pointG.position.y = 200;
+       musicchomp();
+       resultado = resultado + 30;
+       document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+  }else if(sphere.position.y <= pointG2.position.y + RadioG &&
+   sphere.position.x <= pointG2.position.x + RadioG &&
+   sphere.position.y >= pointG2.position.y - RadioG &&
+   sphere.position.x >= pointG2.position.x - RadioG  ){
+     pointG2.position.x = 200;
+     pointG2.position.y = 200;
+     musicchomp();
+     resultado = resultado + 30;
+     document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+  }else if(sphere.position.y <= pointG3.position.y + RadioG &&
+   sphere.position.x <= pointG3.position.x + RadioG &&
+   sphere.position.y >= pointG3.position.y - RadioG &&
+   sphere.position.x >= pointG3.position.x - RadioG  ){
+     pointG3.position.x = 200;
+     pointG3.position.y = 200;
+     musicchomp();
+     resultado = resultado + 30;
+     document.getElementById("scores").innerHTML = "Score:" + resultado;
+
+  }else if(sphere.position.y <= pointG4.position.y + RadioG &&
+   sphere.position.x <= pointG4.position.x + RadioG &&
+   sphere.position.y >= pointG4.position.y - RadioG &&
+   sphere.position.x >= pointG4.position.x - RadioG  ){
+     pointG4.position.x = 200;
+     pointG4.position.y = 200;
+     musicchomp();
+     resultado = resultado + 30;
+     document.getElementById("scores").innerHTML = "Score:" + resultado;
+  }else if (pointG.position.x == 200 && pointG2.position.x == 200 && pointG3.position.x == 200
+            && pointG4.position.x == 200 && point.position.x == 200 && point2.position.x == 200
+            && point3.position.x == 200 && point4.position.x == 200 && point5.position.x == 200
+            && point6.position.x == 200 && point7.position.x == 200 && point8.position.x == 200
+            && point9.position.x == 200 && point10.position.x == 200){
     alert("You Win!!,your score is:" + resultado+"and your time is:"+ time + "(Press F5 to reload)" );
   }
 }
