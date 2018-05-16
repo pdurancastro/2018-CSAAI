@@ -129,13 +129,14 @@ function keyHandler(event) {
           equal += 1;
         }
         if(equal == 9){
-          console.log(currentImage);
+          //console.log(currentImage);
           var notification = new Notification("Congratulations your time is :" + time ,
                             {body: "Pulse Start to do again"});
           openWin();
           setTimeout(function() {notification.close()}, 14000);
           //alert("Congratulations your time is :" + time);
           //chooseImage();
+          //
         }
       }
     }
@@ -153,7 +154,7 @@ function openWin() {
     myWindow.document.body.appendChild(x);
     // document.body.appendChild(x);
     //Video();
-    setTimeout(function(){ myWindow.close() },87000);
+    setTimeout(function(){ myWindow.close() },87500);
   }else if (currentImage == 3){
       x.setAttribute("src","video3.mp4");
       x.setAttribute("width", "520");
