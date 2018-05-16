@@ -129,6 +129,7 @@ function keyHandler(event) {
           equal += 1;
         }
         if(equal == 9){
+          console.log(currentImage);
           var notification = new Notification("Congratulations your time is :" + time ,
                             {body: "Pulse Start to do again"});
           openWin();
@@ -143,6 +144,27 @@ function openWin() {
   var myWindow = window.open("", "myWindow", "width=640, height=480");
   myWindow.document.write("<p>Congratulations!!!!!!'</p>");
   var x = document.createElement("VIDEO");
+  if (currentImage == 1){
+    x.setAttribute("src","video2.mp4");
+    x.setAttribute("width", "520");
+    x.setAttribute("height", "360");
+    x.setAttribute("controls","controls");
+    x.setAttribute("autoplay","autoplay");
+    myWindow.document.body.appendChild(x);
+    // document.body.appendChild(x);
+    //Video();
+    setTimeout(function(){ myWindow.close() },87000);
+  }else if (currentImage == 3){
+      x.setAttribute("src","video3.mp4");
+      x.setAttribute("width", "520");
+      x.setAttribute("height", "360");
+      x.setAttribute("controls","controls");
+      x.setAttribute("autoplay","autoplay");
+      myWindow.document.body.appendChild(x);
+      // document.body.appendChild(x);
+      //Video();
+      setTimeout(function(){ myWindow.close() },90000);
+  }else{
   x.setAttribute("src","video.mp4");
   x.setAttribute("width", "520");
   x.setAttribute("height", "360");
@@ -152,6 +174,7 @@ function openWin() {
   // document.body.appendChild(x);
   //Video();
   setTimeout(function(){ myWindow.close() }, 8000);
+  }
 }
 
 function solve(){
